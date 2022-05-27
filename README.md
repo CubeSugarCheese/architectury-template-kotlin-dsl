@@ -3,7 +3,10 @@ architectury template with kotlin-dsl
 
 Based on [Architectury-templates(1.18.2-forge-fabric-quilt-mixin)](https://github.com/architectury/architectury-templates/releases)
 
-Still have some problems.
+> **Warning**
+>
+> Still have some problems.
+
 Like this.
 ```kotlin
 val developmentFabric: Configuration by configurations.creating { extendsFrom(configurations["common"]) }
