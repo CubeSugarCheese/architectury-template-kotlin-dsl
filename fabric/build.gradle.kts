@@ -68,11 +68,11 @@ tasks {
         inputFile.set(shadowJar.flatMap { it.archiveFile })
         dependsOn(shadowJar)
         /**
-         * Uncertain change
-         * groovy -> kotlin dsl
-         * classifier null -> archiveClassifier.set("quilt")
+         * affect suffix of build jar name
+         * if { archiveClassifier.set("fabric") }
+         * name will be examplemod-1.0.0-fabric.jar
          */
-        archiveClassifier.set("quilt")
+        archiveClassifier.set("fabric")
     }
 
     jar {
