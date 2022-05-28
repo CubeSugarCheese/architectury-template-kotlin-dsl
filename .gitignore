@@ -18,8 +18,8 @@ gradle-app.setting
 
 # Architectury-loom runClient
 /common/build/
-/fabric/build/
 /forge/build/
+/fabric/build/
 /quilt/build/
 /forge/run/
 /fabric/run/
