@@ -16,14 +16,11 @@ loom {
  * */
 val common: Configuration by configurations.creating
 val shadowCommon: Configuration by configurations.creating // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-/**
- * Error: Cannot add a configuration with name 'developmentFabric' as a configuration with that name already exists.
- * TODO: fix bug
- * */
-// val developmentFabric: Configuration by configurations.creating { extendsFrom(configurations["common"]) }
+val developmentFabric: Configuration = configurations.getByName("developmentFabric")
 configurations {
     compileClasspath.get().extendsFrom(configurations["common"])
     runtimeClasspath.get().extendsFrom(configurations["common"])
+    developmentFabric.extendsFrom(configurations["common"])
 }
 
 dependencies {
@@ -36,7 +33,7 @@ dependencies {
     shadowCommon(project(":common", configuration = "transformProductionFabric")) { isTransitive = false }
 }
 
-val javaComponent = components["java"] as AdhocComponentWithVariants
+val javaComponent = components.getByName("java", AdhocComponentWithVariants::class)
 javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
     skip()
 }
@@ -83,14 +80,9 @@ tasks {
     }
 
     sourcesJar {
-        val commonSources = project(":common").getTasksByName("sourcesJar", false)
+        val commonSources = project(":common").tasks.getByName("sourcesJar", Jar::class)
         dependsOn(commonSources)
-        /**
-         * Uncertain change
-         * groovy -> kotlin dsl
-         * commonSources.archiveFile.map { zipTree(it) } -> project(":common").sourceSets["main"].allSource
-         */
-        from(project(":common").sourceSets["main"].allSource)
+        from(commonSources.archiveFile.map { zipTree(it) })
     }
 
 

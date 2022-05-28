@@ -21,14 +21,11 @@ loom {
  * */
 val common: Configuration by configurations.creating
 val shadowCommon: Configuration by configurations.creating // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-/**
- * Error: Cannot add a configuration with name 'developmentForge' as a configuration with that name already exists.
- * TODO: fix bug
- * */
-// val developmentForge: Configuration by configurations.creating { extendsFrom(configurations["common"]) }
+val developmentForge: Configuration = configurations.getByName("developmentForge")
 configurations {
     compileClasspath.get().extendsFrom(configurations["common"])
     runtimeClasspath.get().extendsFrom(configurations["common"])
+    developmentForge.extendsFrom(configurations["common"])
 }
 
 dependencies {
@@ -87,14 +84,9 @@ tasks {
     }
 
     sourcesJar {
-        val commonSources = project (":common").getTasksByName("sourcesJar", false)
+        val commonSources = project(":common").tasks.getByName("sourcesJar", Jar::class)
         dependsOn(commonSources)
-        /**
-         * Uncertain change
-         * groovy -> kotlin dsl
-         * commonSources.archiveFile.map { zipTree(it) } -> project(":common").sourceSets["main"].allSource
-         */
-        from(project(":common").sourceSets["main"].allSource)
+        from(commonSources.archiveFile.map { zipTree(it) })
     }
 
 
