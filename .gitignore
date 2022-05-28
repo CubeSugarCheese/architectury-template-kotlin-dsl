@@ -12,8 +12,16 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+
+# IDEA
+/.idea/
+
+# Architectury-loom runClient
 /common/build/
 /fabric/build/
 /forge/build/
 /quilt/build/
-/.idea/
+/forge/run/
+/fabric/run/
+/quilt/run/
+/run/
