@@ -4,6 +4,7 @@ plugins {
 
 repositories {
     maven { url = uri("https://maven.quiltmc.org/repository/release/") }
+    mavenCentral()
 }
 
 architectury {
@@ -40,6 +41,7 @@ dependencies {
 
     common(project(":common", configuration = "namedElements")) { isTransitive = false }
     shadowCommon(project(":common", configuration = "transformProductionQuilt")) { isTransitive = false }
+    common(kotlin("stdlib-jdk8"))
 }
 
 val javaComponent = components.getByName("java", AdhocComponentWithVariants::class)

@@ -31,6 +31,7 @@ dependencies {
 
     common(project(":common", configuration = "namedElements")) { isTransitive = false }
     shadowCommon(project(":common", configuration = "transformProductionFabric")) { isTransitive = false }
+    common(kotlin("stdlib-jdk8"))
 }
 
 val javaComponent = components.getByName("java", AdhocComponentWithVariants::class)

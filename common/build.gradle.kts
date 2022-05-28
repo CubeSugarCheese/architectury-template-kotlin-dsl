@@ -17,6 +17,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${rootProject.property("fabric_loader_version")}")
     // Remove the next line if you don't want to depend on the API
     modApi("dev.architectury:architectury:${rootProject.property("architectury_version")}")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 publishing {

@@ -1,4 +1,5 @@
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
@@ -32,6 +33,7 @@ allprojects {
     apply(plugin = "java")
     apply(plugin = "architectury-plugin")
     apply(plugin = "maven-publish")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
 
     base.archivesName.set(rootProject.property("archives_base_name").toString())
     //base.archivesBaseName = rootProject.property("archives_base_name").toString()
@@ -46,6 +48,10 @@ allprojects {
         // for more information about repositories.
     }
 
+    dependencies {
+        "compileClasspath"("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
+    }
+
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
         options.release.set(17)
@@ -53,5 +59,15 @@ allprojects {
 
     java {
         withSourcesJar()
+    }
+
+    // could not set to 17, up to 16
+    val compileKotlin: KotlinCompile by tasks
+    compileKotlin.kotlinOptions {
+        jvmTarget = "16"
+    }
+    val compileTestKotlin: KotlinCompile by tasks
+    compileTestKotlin.kotlinOptions {
+        jvmTarget = "16"
     }
 }
