@@ -44,7 +44,7 @@ dependencies {
     common(kotlin("stdlib-jdk8"))
 }
 
-val javaComponent = components.getByName("java", AdhocComponentWithVariants::class)
+val javaComponent = components.getByName<AdhocComponentWithVariants>("java")
 javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
     skip()
 }
@@ -96,7 +96,7 @@ tasks {
 
 
     sourcesJar {
-        val commonSources = project(":common").tasks.getByName("sourcesJar", Jar::class)
+        val commonSources = project(":common").tasks.getByName<Jar>("sourcesJar")
         dependsOn(commonSources)
         from(commonSources.archiveFile.map { zipTree(it) })
     }
