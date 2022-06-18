@@ -49,7 +49,7 @@ allprojects {
     }
 
     dependencies {
-        "compileClasspath"("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
+        "compileClasspath"("org.jetbrains.kotlin:kotlin-gradle-plugin:${property("kotlin_version")}")
     }
 
     tasks.withType<JavaCompile> {
