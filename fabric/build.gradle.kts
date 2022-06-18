@@ -31,10 +31,11 @@ dependencies {
 
     common(project(":common", configuration = "namedElements")) { isTransitive = false }
     shadowCommon(project(":common", configuration = "transformProductionFabric")) { isTransitive = false }
-    common(kotlin("stdlib-jdk8"))
+    modImplementation(group = "net.fabricmc", name = "fabric-language-kotlin", version = "1.8.0+kotlin.1.7.0")
+
 }
 
-val javaComponent = components.getByName("java", AdhocComponentWithVariants::class)
+val javaComponent = components.getByName<AdhocComponentWithVariants>("java")
 javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
     skip()
 }
@@ -81,7 +82,7 @@ tasks {
     }
 
     sourcesJar {
-        val commonSources = project(":common").tasks.getByName("sourcesJar", Jar::class)
+        val commonSources = project(":common").tasks.getByName<Jar>("sourcesJar")
         dependsOn(commonSources)
         from(commonSources.archiveFile.map { zipTree(it) })
     }
