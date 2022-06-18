@@ -7,12 +7,31 @@ architectury {
     forge()
 }
 
+val modId: String = rootProject.property("archives_base_name").toString()
 loom {
     accessWidenerPath.set(project(":common").loom.accessWidenerPath)
 
     forge {
         convertAccessWideners.set(true)
         extraAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
+        dataGen {
+            mod(modId)
+        }
+    }
+
+    launches {
+        getByName("data") {
+            arg("--existing", file("src/main/resources").absolutePath)
+        }
+    }
+
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir("src/generated/resources")
+        }
     }
 }
 
@@ -35,6 +54,13 @@ dependencies {
     common(project(":common", configuration = "namedElements")) { isTransitive = false }
     shadowCommon(project(":common", configuration = "transformProductionForge")) { isTransitive = false }
     common(kotlin("stdlib-jdk8"))
+}
+
+repositories {
+    maven {
+        name = "Kotlin for Forge"
+        url = uri("https://thedarkcolour.github.io/KotlinForForge/")
+    }
 }
 
 val javaComponent = components["java"] as AdhocComponentWithVariants
@@ -85,9 +111,13 @@ tasks {
     }
 
     sourcesJar {
-        val commonSources = project(":common").tasks.getByName("sourcesJar", Jar::class)
+        val commonSources = project(":common").tasks.getByName<Jar>("sourcesJar")
         dependsOn(commonSources)
         from(commonSources.archiveFile.map { zipTree(it) })
+    }
+
+    getByName<ProcessResources>("processResources") {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
 
 
