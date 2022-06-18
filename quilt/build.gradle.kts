@@ -42,7 +42,7 @@ dependencies {
     shadowCommon(project(":common", configuration = "transformProductionQuilt")) { isTransitive = false }
 }
 
-val javaComponent = components.getByName("java", AdhocComponentWithVariants::class)
+val javaComponent = components.getByName<AdhocComponentWithVariants>("java")
 javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
     skip()
 }
@@ -62,29 +62,14 @@ tasks {
 
     shadowJar {
         exclude("architectury.common.json")
-        /**
-         * magic!
-         * groovy -> kotlin dsl
-         * [project.configurations.shadowCommon] -> listOf(project.configurations["shadowCommon"])
-         * */
         configurations = listOf(project.configurations["shadowCommon"])
         archiveClassifier.set("dev-shadow")
     }
 
     remapJar {
         injectAccessWidener.set(true)
-        /**
-         * magic!
-         * groovy -> kotlin dsl
-         * shadowJar.archiveFile -> shadowJar.flatMap { it.archiveFile }
-         * */
         inputFile.set(shadowJar.flatMap { it.archiveFile })
         dependsOn(shadowJar)
-        /**
-         * affect suffix of build jar name
-         * if { archiveClassifier.set("quilt") }
-         * name will be examplemod-1.0.0-quilt.jar
-         */
         archiveClassifier.set("quilt")
     }
 
@@ -94,7 +79,7 @@ tasks {
 
 
     sourcesJar {
-        val commonSources = project(":common").tasks.getByName("sourcesJar", Jar::class)
+        val commonSources = project(":common").tasks.getByName<Jar>("sourcesJar")
         dependsOn(commonSources)
         from(commonSources.archiveFile.map { zipTree(it) })
     }
