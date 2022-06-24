@@ -10,10 +10,14 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import org.apache.logging.log4j.LogManager
 import java.util.function.Supplier
+import com.mojang.logging.LogUtils.getLogger
+import org.slf4j.Logger
 
 object ExampleMod {
     const val MOD_ID = "examplemod"
+    val logger: Logger = getLogger()
 
     // We can use this if we don't want to use DeferredRegister
     @Suppress("unused")
