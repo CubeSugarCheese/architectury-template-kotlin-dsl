@@ -5,7 +5,8 @@ plugins {
     java
     `kotlin-dsl`
     id("architectury-plugin") version "3.4-SNAPSHOT"
-    id("dev.architectury.loom") version "0.11.0-SNAPSHOT" apply false
+    id("dev.architectury.loom") version "0.12.0-SNAPSHOT" apply false
+    kotlin("jvm") version "1.7.0" apply false
 }
 
 architectury {
@@ -17,12 +18,20 @@ subprojects {
 
     val loom = project.extensions.getByName<LoomGradleExtensionAPI>("loom")
 
-
+    repositories {
+        maven {
+            name = "parchmentmc"
+            url = uri("https://maven.parchmentmc.org")
+        }
+    }
     dependencies {
         "minecraft"("com.mojang:minecraft:${project.property("minecraft_version")}")
         // The following line declares the mojmap mappings, you may use other mappings as well
         "mappings"(
-            loom.officialMojangMappings()
+            loom.layered {
+                officialMojangMappings()
+                parchment("org.parchmentmc.data:${project.property("parchment_version")}")
+            }
         )
         // The following line declares the yarn mappings you may select this one as well.
         // "mappings"("net.fabricmc:yarn:1.18.2+build.3:v2")
@@ -61,13 +70,12 @@ allprojects {
         withSourcesJar()
     }
 
-    // could not set to 17, up to 16
     val compileKotlin: KotlinCompile by tasks
     compileKotlin.kotlinOptions {
-        jvmTarget = "16"
+        jvmTarget = "17"
     }
     val compileTestKotlin: KotlinCompile by tasks
     compileTestKotlin.kotlinOptions {
-        jvmTarget = "16"
+        jvmTarget = "17"
     }
 }

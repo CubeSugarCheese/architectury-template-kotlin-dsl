@@ -71,6 +71,8 @@ javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
 tasks {
     processResources {
         inputs.property("version", project.version)
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
 
         filesMatching("META-INF/mods.toml") {
             expand("version" to project.version)
@@ -80,29 +82,13 @@ tasks {
     shadowJar {
         exclude("fabric.mod.json")
         exclude("architectury.common.json")
-
-        /**
-         * magic!
-         * groovy -> kotlin dsl
-         * [project.configurations.shadowCommon] -> listOf(project.configurations["shadowCommon"])
-         * */
         configurations = listOf(project.configurations["shadowCommon"])
         archiveClassifier.set("dev-shadow")
     }
 
     remapJar {
-        /**
-         * magic!
-         * groovy -> kotlin dsl
-         * shadowJar.archiveFile -> shadowJar.flatMap { it.archiveFile }
-         * */
         inputFile.set(shadowJar.flatMap { it.archiveFile })
         dependsOn(shadowJar)
-        /**
-         * affect suffix of build jar name
-         * if { archiveClassifier.set("forge") }
-         * name will be examplemod-1.0.0-forge.jar
-         */
         archiveClassifier.set("forge")
     }
 
@@ -114,11 +100,9 @@ tasks {
         val commonSources = project(":common").tasks.getByName<Jar>("sourcesJar")
         dependsOn(commonSources)
         from(commonSources.archiveFile.map { zipTree(it) })
-    }
-
-    getByName<ProcessResources>("processResources") {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
+
 
 
     publishing {

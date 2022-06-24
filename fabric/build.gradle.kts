@@ -51,29 +51,14 @@ tasks {
 
     shadowJar {
         exclude("architectury.common.json")
-        /**
-         * magic!
-         * groovy -> kotlin dsl
-         * [project.configurations.shadowCommon] -> listOf(project.configurations["shadowCommon"])
-         * */
         configurations = listOf(project.configurations["shadowCommon"])
         archiveClassifier.set("dev-shadow")
     }
 
     remapJar {
         injectAccessWidener.set(true)
-        /**
-         * magic!
-         * groovy -> kotlin dsl
-         * shadowJar.archiveFile -> shadowJar.flatMap { it.archiveFile }
-         * */
         inputFile.set(shadowJar.flatMap { it.archiveFile })
         dependsOn(shadowJar)
-        /**
-         * affect suffix of build jar name
-         * if { archiveClassifier.set("fabric") }
-         * name will be examplemod-1.0.0-fabric.jar
-         */
         archiveClassifier.set("fabric")
     }
 

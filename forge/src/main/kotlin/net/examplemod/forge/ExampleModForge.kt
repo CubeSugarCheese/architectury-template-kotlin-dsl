@@ -17,8 +17,9 @@ class ExampleModForge {
         init()
     }
 
+    @Deprecated("", ReplaceWith("onGatherDataEvent()"))
     private fun onGatherData(event: GatherDataEvent) {
         val gen = event.generator
-        gen.addProvider(ChineseProvider(gen))
+        gen.addProvider(true, ChineseProvider(gen))
     }
 }
