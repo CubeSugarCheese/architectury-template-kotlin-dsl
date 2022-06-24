@@ -1,6 +1,10 @@
 # architectury-template-kotlin-dsl
 architectury template with kotlin-dsl
 
-Based on [Architectury-templates(1.18.2-forge-fabric-quilt-mixin)](https://github.com/architectury/architectury-templates/releases)
+- branch:
+    - main: Like official templates, only use kotlin dsl to replace groovy dsl
+    - with-kotlin: Experimental. Add kotlin support, and some feature samples (like datagen).
 
-If you find bugs, please open a issues or PR to help me fix bugs.
+Official templates: [Architectury-templates](https://github.com/architectury/architectury-templates/releases)
+
+If you find bugs, please open issues or PR to help me fix bugs.
