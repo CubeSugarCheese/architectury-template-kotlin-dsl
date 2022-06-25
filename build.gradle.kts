@@ -30,7 +30,8 @@ subprojects {
         "mappings"(
             loom.layered {
                 officialMojangMappings()
-                parchment("org.parchmentmc.data:${project.property("parchment_version")}")
+                // parchment 1.19 not support at 2022-6-25
+                // parchment("org.parchmentmc.data:parchment-${property("minecraft_version")}:${property("parchment_version")}@zip")
             }
         )
         // The following line declares the yarn mappings you may select this one as well.
